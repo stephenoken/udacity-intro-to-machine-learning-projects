@@ -26,15 +26,29 @@ ages_train, ages_test, net_worths_train, net_worths_test = train_test_split(ages
 ### fill in a regression here!  Name the regression object reg so that
 ### the plotting code below works, and you can see what your regression looks like
 
+from sklearn.linear_model import LinearRegression
+from outlier_cleaner import outlierCleaner
+
+def classify(features_train, targets_train):
+    cls = LinearRegression()
+    return cls.fit(features_train, targets_train)
+
+reg = classify(ages_train, net_worths_train)
+
+def evaluate_classifier(cls):
+    print "==========="
+    print "Trained on train data (with outlier)"
+    print "==========="
+    print "Slope: " , cls.coef_
+    print "Intercept: " , cls.intercept_
+    print "r^2 (train): " , cls.score(ages_train, net_worths_train)
+    print "r^2 (test): " , cls.score(ages_test, net_worths_test)
+    print "==========="
+
+evaluate_classifier(reg)
 
 
-
-
-
-
-
-
-
+predictions = reg.predict(ages_train)
 
 try:
     plt.plot(ages, reg.predict(ages), color="blue")
@@ -46,22 +60,13 @@ plt.show()
 
 ### identify and remove the most outlier-y points
 cleaned_data = []
-try:
-    predictions = reg.predict(ages_train)
-    cleaned_data = outlierCleaner( predictions, ages_train, net_worths_train )
-except NameError:
-    print "your regression object doesn't exist, or isn't name reg"
-    print "can't make predictions to use in identifying outliers"
-
-
-
-
-
-
+predictions = reg.predict(ages_train)
+cleaned_data = outlierCleaner( predictions, ages_train, net_worths_train )
 
 ### only run this code if cleaned_data is returning data
 if len(cleaned_data) > 0:
     ages, net_worths, errors = zip(*cleaned_data)
+    evaluate_classifier(classify(ages, net_worths))
     ages       = numpy.reshape( numpy.array(ages), (len(ages), 1))
     net_worths = numpy.reshape( numpy.array(net_worths), (len(net_worths), 1))
 
