@@ -46,7 +46,7 @@ def vecotorise_email(path):
     email_text = parseOutText(email)
     # use str.replace() to remove any instances of the words
     # ["sara", "shackleton", "chris", "germani"]
-    cleaned_email_text = re.sub(r"(sara)|(shackleton)|(germani)|(chris)", "", email_text)
+    cleaned_email_text = re.sub(r"(sara)|(shackleton)|(germani)|(chris)|(sshacklensf)|(germannsf)", "", email_text)
 
     # append the text to word_data
     word_data.append(cleaned_email_text)
@@ -72,7 +72,7 @@ for name, from_person in [("sara", from_sara), ("chris", from_chris)]:
         email_text = parseOutText(email)
         # use str.replace() to remove any instances of the words
         # ["sara", "shackleton", "chris", "germani"]
-        stop_words = ["sara", "shackleton", "chris", "germani"]
+        stop_words = ["sara", "shackleton", "chris", "germani", "sshacklensf", "cgermannsf"]
         cleaned_email_text = " ".join([x for x in email_text.split() if x not in stop_words])
         # cleaned_email_text = re.sub(r"(sara)|(shackleton)|(germani)|(chris)", "", email_text)
         # append the text to word_data

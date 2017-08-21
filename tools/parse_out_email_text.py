@@ -33,7 +33,7 @@ def parseOutText(f):
 
         ### split the text string into individual words, stem each word,
         stemmer = SnowballStemmer('english')
-        words =  " ".join([stemmer.stem(word) for word in text_string.split(" ")])
+        words =  " ".join([stemmer.stem(word).strip() for word in text_string.split()])
         ### and append the stemmed word to words (make sure there's a single
         ### space between each stemmed word)
 
@@ -41,7 +41,7 @@ def parseOutText(f):
 
 
 
-    return re.sub(r"\W{2,}", " ", words)
+    return words
 
 
 
