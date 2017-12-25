@@ -12,8 +12,12 @@
 
 import pickle
 import sys
+import sklearn.metrics as metrics
 sys.path.append("../tools/")
 from feature_format import featureFormat, targetFeatureSplit
+from sklearn.model_selection import train_test_split, GridSearchCV 
+from sklearn.tree import DecisionTreeClassifier
+
 
 data_dict = pickle.load(open("../final_project/final_project_dataset.pkl", "r") )
 
@@ -26,7 +30,17 @@ data = featureFormat(data_dict, features_list)
 labels, features = targetFeatureSplit(data)
 
 
-
 ### it's all yours from here forward!  
+X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=.3, random_state=42)
 
+# Using cross validation generated test and training data
+# clf = DecisionTreeClassifier().fit(X_train, y_train)
 
+# Using GridSearch
+param_grid = {
+        'min_samples_split': list(range(2, 150))
+        }
+clf = GridSearchCV(DecisionTreeClassifier(criterion='gini'), param_grid).fit(X_train, y_train)
+
+print "Best params for classifier are :{}".format(clf.best_params_)
+print metrics.accuracy_score(y_test, clf.predict(X_test))
